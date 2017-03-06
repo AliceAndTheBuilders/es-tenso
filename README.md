@@ -7,7 +7,7 @@ This is why we created this small tool which maybe can serve someone else.
 If you have any feedback or contributions please feel free to provide them =). 
 
 ## Testing
-Right now there is no testsuite. We've tried the script with various ES 1.7.3, 2.3.3 and 5.2.2 with data ranging from 1MB to ~9GiB and up to 17 million documents
+Right now there is no testsuite, but we've tried the script with various ES versions (1.7.3, 2.3.3 and 5.2.2), data ranging from 1MB to ~9GiB and up to 17 million documents per index.
 
 # Usage
 
