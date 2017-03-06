@@ -23,11 +23,11 @@ class Helper:
     def get_destination(args):
         if Helper.is_uri_reachable(uri=args.destination):
             # Seems to be an URI
-            return ElasticDestination(uri=args.destination, force=args.force, auth_user=args.dest_auth_user,
+            return ElasticDestination(uri=args.destination, force=False, auth_user=args.dest_auth_user,
                                       auth_pass=args.dest_auth_pass)
 
         # Default to FileSource
-        return FileDestination(uri=args.destination, force=args.force, max_file_size=args.max_file_size)
+        return FileDestination(uri=args.destination, force=False, max_file_size=args.max_file_size)
 
     ##
     # Identifies the kind of the source and initializes it
