@@ -1,5 +1,5 @@
 # Elasticsearch Tensō - 転送
-A little tool to export/import data from and to elasticsearch
+A little tool to export/import data from and to the great []Elasticsearch](https://www.elastic.co).
 
 ## Testing
 Right now there is no testsuite. We've tried the script with various ES 1.7.3, 2.3.3 and 5.2.2 with data ranging from 1MB to ~9GiB and up to 17 million documents
