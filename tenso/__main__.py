@@ -38,7 +38,9 @@ def main():
     # parser.add_argument("-f", "--force", help="Force overwrite existing destinations", action="store_true")
 
     # Behaviour modifiers
-    parser.add_argument("-v", "--verbose", help="More verbose output", action="store_true")
+    output_group = parser.add_mutually_exclusive_group()
+    output_group.add_argument("-v", "--verbose", help="More verbose output", action="store_true")
+    output_group.add_argument("-q", "--quiet", help="Be quiet", action="store_true")
     # TODO implement
     # parser.add_argument("-i", "--indices", help="Specify a list of indices that will be used, e.g. a, b, c, d.")
 
@@ -55,6 +57,8 @@ def main():
 
     if args.verbose:
         ch.setLevel(logging.DEBUG)
+    elif args.quiet:
+        ch.setLevel(logging.WARN)
     else:
         ch.setLevel(logging.INFO)
 
