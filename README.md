@@ -56,7 +56,7 @@ python3.5 tenso-1.0.pyz http://1.2.3.4:9200 http://localhost:9200
 
 MIT License
 
-Copyright (c) 2017
+Copyright (c) 2017 Alice and the Builders GmbH
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
