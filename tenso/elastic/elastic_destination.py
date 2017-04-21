@@ -31,8 +31,17 @@ class ElasticDestination(Elastic, Destination):
     def write_mappings(self, idx: str, mappings: dict) -> bool:
         # Split the dict by types and create single mapping requests
         for document_type in mappings[idx]["mappings"]:
-            self._log.info("Writing mappings for %s in index %s", document_type, idx)
+            # Modify the mappings to respect version specific changes
+            if self.__version.__ge__(LooseVersion("5.0.0")):
+                for field_name in mappings[idx]["mappings"][document_type]["properties"]:
+                    field = mappings[idx]["mappings"][document_type]["properties"][field_name]
 
+                    # Fielddata cannot be used on non indexed fields (this check is very loose right now)
+                    if 'fielddata' in field:
+                        self._log.debug("removing fielddata from %s.%s.%s", idx, document_type, field_name)
+                        field.pop("fielddata")
+
+            self._log.info("Writing mappings for %s in index %s", document_type, idx)
             body = json.dumps(mappings[idx]["mappings"][document_type])
 
             r = self.put(idx + "/_mapping/" + document_type, body)
