@@ -59,6 +59,8 @@ class ElasticDestination(Elastic, Destination):
         sanitized_list = {"settings": {"index": {}}}
 
         if args.total_fields:
+            sanitized_list["settings"]["index"]["mapping"] = []
+            sanitized_list["settings"]["index"]["mapping"]["total_fields"] = []
             sanitized_list["settings"]["index"]["mapping"]["total_fields"]["limit"] = args.total_fields
 
         for item in settings[idx]["settings"]["index"].items():
