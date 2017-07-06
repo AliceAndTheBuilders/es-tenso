@@ -28,7 +28,7 @@ class ElasticDestination(Elastic, Destination):
 
         self._log.info("Destination Elasticsearch: %s", self.__version.vstring)
 
-    def write_mappings(self, idx: str, mappings: dict, args) -> bool:
+    def write_mappings(self, idx: str, mappings: dict) -> bool:
         # Split the dict by types and create single mapping requests
         for document_type in mappings[idx]["mappings"]:
             # Modify the mappings to respect version specific changes
@@ -52,11 +52,16 @@ class ElasticDestination(Elastic, Destination):
 
         return True
 
-    def write_settings(self, idx: str, settings: dict) -> bool:
+    def write_settings(self, idx: str, settings: dict, args) -> bool:
         # Sanitize index request
-        allowed = ["number_of_replicas", "number_of_shards", "mapping"]
+        allowed = ["number_of_replicas", "number_of_shards"]
 
         sanitized_list = {"settings": {"index": {}}}
+
+        if args.total_fields:
+            sanitized_list["settings"]["index"]["mapping"] = {}
+            sanitized_list["settings"]["index"]["mapping"]["total_fields"] = {}
+            sanitized_list["settings"]["index"]["mapping"]["total_fields"]["limit"] = args.total_fields
 
         for item in settings[idx]["settings"]["index"].items():
             if item[0] in allowed:
@@ -70,9 +75,9 @@ class ElasticDestination(Elastic, Destination):
 
         body = json.dumps(sanitized_list)
 
-        r = self.put(idx, body)
-
         self._log.info("Adding %s with %s", idx, body)
+
+        r = self.put(idx, body)
 
         if r.status_code != 200:
             self._log.error("Could not create index %s: %s -> %s", idx, r.status_code, r.json()["error"]["reason"])
