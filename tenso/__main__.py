@@ -37,6 +37,9 @@ def main():
     # TODO implement as feature
     # parser.add_argument("-f", "--force", help="Force overwrite existing destinations", action="store_true")
 
+    # Index modifiers
+    parser.add_argument("--total_fields", help="Force a different value index.mapping.total_fields.limit", default=None)
+
     # Behaviour modifiers
     output_group = parser.add_mutually_exclusive_group()
     output_group.add_argument("-v", "--verbose", help="More verbose output", action="store_true")
@@ -95,7 +98,7 @@ def main():
 
         log.info("### SETTINGS ###")
         settings = src.get_settings(idx=idx)
-        dest.write_settings(idx=idx, settings=settings)
+        dest.write_settings(idx=idx, settings=settings, args=args)
 
         log.info("### MAPPINGS ###")
         mappings = src.get_mappings(idx=idx)
