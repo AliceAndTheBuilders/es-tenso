@@ -54,12 +54,12 @@ class ElasticDestination(Elastic, Destination):
 
     def write_settings(self, idx: str, settings: dict, args) -> bool:
         # Sanitize index request
-        allowed = ["number_of_replicas", "number_of_shards"]
+        allowed = ["number_of_replicas", "number_of_shards", ""]
 
         sanitized_list = {"settings": {"index": {}}}
 
         if args.total_fields:
-            sanitized_list["settings"]["index.mapping.total_fields.limit"] = args.total_fields
+            sanitized_list["settings"]["index"]["mapping"]["total_fields"]["limit"] = args.total_fields
 
         for item in settings[idx]["settings"]["index"].items():
             if item[0] in allowed:
