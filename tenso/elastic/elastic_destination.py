@@ -58,14 +58,11 @@ class ElasticDestination(Elastic, Destination):
 
         sanitized_list = {"settings": {"index": {}}}
 
-        if args.total_fields:
-            sanitized_list["settings"]["index"]["mapping"] = []
-            sanitized_list["settings"]["index"]["mapping"]["total_fields"] = []
-            sanitized_list["settings"]["index"]["mapping"]["total_fields"]["limit"] = args.total_fields
-
         for item in settings[idx]["settings"]["index"].items():
             if item[0] in allowed:
                 sanitized_list["settings"]["index"][item[0]] = item[1]
+            else:
+                self._log.debug("Ignored setting %s", item[0])
 
         if self.exists(idx):
             self._log.warning("%s does already exist", idx)
