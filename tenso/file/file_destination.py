@@ -16,7 +16,7 @@ class FileDestination(ElasticFile, Destination):
     max_file_size = None
 
     def __init__(self, uri: str, force: bool = False, max_file_size: int = 100):
-        self.max_file_size = (max_file_size * 1024 * 1024)
+        self.max_file_size = (int(max_file_size) * 1024 * 1024)
 
         ElasticFile.__init__(self, uri=uri)
         # Source.__init__(self, uri=uri, chunk_size=chunk_size)
