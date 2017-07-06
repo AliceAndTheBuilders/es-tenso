@@ -44,7 +44,7 @@ class FileDestination(ElasticFile, Destination):
             self.cur_data = []
             self.cur_data_file_no = 0
 
-    def write_settings(self, idx: str, settings: dict) -> bool:
+    def write_settings(self, idx: str, settings: dict, args) -> bool:
         self.index_start(idx=idx)
         self.write_to_file(idx, "settings.json", settings)
 

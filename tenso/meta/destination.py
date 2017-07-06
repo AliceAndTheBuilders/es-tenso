@@ -28,7 +28,7 @@ class Destination(object):
     # Write the settings for the given index to the datasource
     #
     # @param idx    The index to return the settings for
-    def write_settings(self, idx: str, settings: dict) -> bool:
+    def write_settings(self, idx: str, settings: dict, args) -> bool:
         raise NotImplementedError("Implement me")
 
     ##
