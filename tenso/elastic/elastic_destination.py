@@ -28,7 +28,7 @@ class ElasticDestination(Elastic, Destination):
 
         self._log.info("Destination Elasticsearch: %s", self.__version.vstring)
 
-    def write_mappings(self, idx: str, mappings: dict) -> bool:
+    def write_mappings(self, idx: str, mappings: dict, args) -> bool:
         # Split the dict by types and create single mapping requests
         for document_type in mappings[idx]["mappings"]:
             # Modify the mappings to respect version specific changes
@@ -52,9 +52,9 @@ class ElasticDestination(Elastic, Destination):
 
         return True
 
-    def write_settings(self, idx: str, settings: dict, args) -> bool:
+    def write_settings(self, idx: str, settings: dict) -> bool:
         # Sanitize index request
-        allowed = ["number_of_replicas", "number_of_shards", ""]
+        allowed = ["number_of_replicas", "number_of_shards", "mapping"]
 
         sanitized_list = {"settings": {"index": {}}}
 

@@ -98,11 +98,11 @@ def main():
 
         log.info("### SETTINGS ###")
         settings = src.get_settings(idx=idx)
-        dest.write_settings(idx=idx, settings=settings, args=args)
+        dest.write_settings(idx=idx, settings=settings)
 
         log.info("### MAPPINGS ###")
         mappings = src.get_mappings(idx=idx)
-        dest.write_mappings(idx=idx, mappings=mappings)
+        dest.write_mappings(idx=idx, mappings=mappings, args=args)
 
         log.info("### ALIASES ###")
         aliases = src.get_aliases(idx=idx)
