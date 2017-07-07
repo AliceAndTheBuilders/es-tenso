@@ -1,7 +1,10 @@
 import logging
 
 import requests
+import http.client
 
+# Set a larger http header size
+http.client._MAXHEADERS = 1000
 
 class Elastic:
     # The version of the elasticsearch

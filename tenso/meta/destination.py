@@ -6,6 +6,7 @@ from meta.source import Source
 
 class Destination(object):
     _log = None
+    force = False
 
     ##
     # Initialize the destination
@@ -13,7 +14,7 @@ class Destination(object):
     # @param chunk_size     How large shall the chunks be that will be fetched from the source
     # @param uri            The uri of the source
     # @param force          Force overwrite existing data
-    def __init__(self, uri: str, force: bool = False):
+    def __init__(self, uri: str, force: bool = False, args = None):
         self.uri = uri
         self.force = force
 
@@ -25,10 +26,15 @@ class Destination(object):
         raise NotImplementedError("Implement me")
 
     ##
+    # Do all required preparations
+    def prepare(self, idx: str):
+        raise NotImplementedError("Implement me")
+
+    ##
     # Write the settings for the given index to the datasource
     #
     # @param idx    The index to return the settings for
-    def write_settings(self, idx: str, settings: dict, args) -> bool:
+    def write_settings(self, idx: str, settings: dict) -> bool:
         raise NotImplementedError("Implement me")
 
     ##

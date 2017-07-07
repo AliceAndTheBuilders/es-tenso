@@ -34,8 +34,7 @@ def main():
     parser.add_argument("--dest_auth_user", help="The user for HTTP Basic Auth", default=None)
     parser.add_argument("--dest_auth_pass", help="The password for HTTP Basic Auth", default=None)
     parser.add_argument("--max_file_size", help="Maximum file size for file destination", default=100)
-    # TODO implement as feature
-    # parser.add_argument("-f", "--force", help="Force overwrite existing destinations", action="store_true")
+    parser.add_argument("-f", "--force", help="Force overwrite existing destinations", action="store_true")
 
     # Index modifiers
     parser.add_argument("--total_fields", help="Force a different value index.mapping.total_fields.limit", default=None)
@@ -98,7 +97,7 @@ def main():
 
         log.info("### SETTINGS ###")
         settings = src.get_settings(idx=idx)
-        dest.write_settings(idx=idx, settings=settings, args=args)
+        dest.write_settings(idx=idx, settings=settings)
 
         log.info("### MAPPINGS ###")
         mappings = src.get_mappings(idx=idx)

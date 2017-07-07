@@ -6,13 +6,16 @@ from meta.destination import Destination
 
 
 class ElasticDestination(Elastic, Destination):
-    def __init__(self, uri: str, auth_user=None, auth_pass=None, force: bool = False):
+    total_fields = None
+
+    def __init__(self, uri: str, auth_user=None, auth_pass=None, force: bool = False, args = None):
         uri += "/"
 
-        self.force = force
+        if args.total_fields:
+            self.total_fields = args.total_fields
 
         Elastic.__init__(self, uri=uri, auth_user=auth_user, auth_pass=auth_pass)
-        Destination.__init__(self, uri=uri)
+        Destination.__init__(self, uri=uri, args=args)
 
     ####################################################################################################################
     # Destination
@@ -27,6 +30,11 @@ class ElasticDestination(Elastic, Destination):
         self.__version = LooseVersion(r.json()["version"]["number"])
 
         self._log.info("Destination Elasticsearch: %s", self.__version.vstring)
+
+    def prepare(self, idx: str):
+        # Remove index if force is set
+        if self.force and self.exists(idx=idx):
+            self.delete(path=idx)
 
     def write_mappings(self, idx: str, mappings: dict) -> bool:
         # Split the dict by types and create single mapping requests
@@ -52,16 +60,16 @@ class ElasticDestination(Elastic, Destination):
 
         return True
 
-    def write_settings(self, idx: str, settings: dict, args) -> bool:
+    def write_settings(self, idx: str, settings: dict) -> bool:
         # Sanitize index request
         allowed = ["number_of_replicas", "number_of_shards"]
 
         sanitized_list = {"settings": {"index": {}}}
 
-        if args.total_fields:
+        if self.total_fields:
             sanitized_list["settings"]["index"]["mapping"] = {}
             sanitized_list["settings"]["index"]["mapping"]["total_fields"] = {}
-            sanitized_list["settings"]["index"]["mapping"]["total_fields"]["limit"] = args.total_fields
+            sanitized_list["settings"]["index"]["mapping"]["total_fields"]["limit"] = self.total_fields
 
         for item in settings[idx]["settings"]["index"].items():
             if item[0] in allowed:

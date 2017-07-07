@@ -15,12 +15,12 @@ class FileDestination(ElasticFile, Destination):
     docs_written = 0
     max_file_size = None
 
-    def __init__(self, uri: str, force: bool = False, max_file_size: int = 100):
+    def __init__(self, uri: str, force: bool = False, max_file_size: int = 100, args = None):
         self.max_file_size = (int(max_file_size) * 1024 * 1024)
 
         ElasticFile.__init__(self, uri=uri)
         # Source.__init__(self, uri=uri, chunk_size=chunk_size)
-        Destination.__init__(self, uri=uri, force=force)
+        Destination.__init__(self, uri=uri, force=force, args=args)
 
     ####################################################################################################################
     # Destination
@@ -44,7 +44,12 @@ class FileDestination(ElasticFile, Destination):
             self.cur_data = []
             self.cur_data_file_no = 0
 
-    def write_settings(self, idx: str, settings: dict, args) -> bool:
+    def prepare(self, idx: str):
+        # Remove file if force is set
+        if self.force and os.path.isfile(self.uri):
+            os.remove(self.uri)
+
+    def write_settings(self, idx: str, settings: dict) -> bool:
         self.index_start(idx=idx)
         self.write_to_file(idx, "settings.json", settings)
 
