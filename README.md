@@ -1,3 +1,7 @@
+# Deprecated
+
+The project has been replaced with a fresh dotnet core implementation: https://gitlab.com/Galeon/absolem
+
 # Elasticsearch Tensō - 転送
 A little tool to export/import data from and to the great [Elasticsearch](https://www.elastic.co).
 
